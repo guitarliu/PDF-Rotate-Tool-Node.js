@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/logo.svg" type="image/x-icon">
+    <title>PDF-Rotate-Tool</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 添加外部CSS文件 -->
+    <style>
+        /* 内联CSS样式 */
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container main">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.svg" width="90" height="90" alt="PDF-Rotate-Tool" title="PDF-Rotate-Tool">
+                </a>
+            </div>
+            <h1>PDF-Rotate-Tool</h1>
+            <h2>批量旋转PDF文件</h2>
+            <div class="featureMarks">
+                <i>免费</i> <i>在线</i> <i>无限制</i>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="tool">
+            <div class="droparea" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                <table>
+                    <td>
+                        <tr>1234</tr>
+                    </td>
+                </table>
+                <input type="file" name="fileinput" id="fileinput" accept=".pdf" multiple>
+                <input type="button" name="selectpdf" id="selectpdf" value="选择文件" title="选择PDF文件">
+                <p name="note" id="note">或拖拽PDF文件至此</p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 PDF-Rotate-Tool by guitarliu</p>
+    </footer>
+    <script src="script.js"></script> <!-- 添加外部JavaScript文件 -->
+</body>
+</html>
+
