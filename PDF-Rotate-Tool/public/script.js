@@ -1,6 +1,15 @@
 const dropArea = document.querySelector('.droparea');
 const fileInput = document.getElementById('fileinput');
 
+function addfilelist(filename) {
+  const listItem = document.createElement('tr');
+  listItem.textContent = filename;
+  listItem.style.fontSize = '0.8em';
+  listItem.style.padding = '5px';
+  dropArea.appendChild(listItem);
+}
+
+
 function choosepdf() {
   fileInput.click();
   selectpdf.disable = true;
@@ -10,13 +19,11 @@ function choosepdf() {
     FileList.innerHTML = '';
     for (let i= 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      const listItem = document.createElement('tr');
-      listItem.textContent = file.name;
-      listItem.style.fontSize = '0.8em';
-      listItem.style.padding = '5px';
-      dropArea.appendChild(listItem);
+      addfilelist(file.name);
     }
+    fileInput.value = '';
     selectpdf.style.display = 'none';
+    note.style.display = 'none';
   })
 }
 
@@ -32,11 +39,7 @@ function dropHandler(ev) {
       // if dropped items aren't files, reject them
       if (ev.dataTransfer.items[i].kind === 'file') {
         var file = ev.dataTransfer.items[i].getAsFile();
-        const listItem = document.createElement('tr');
-        listItem.textContent = file.name;
-        listItem.style.fontSize = '0.8em';
-        listItem.style.padding = '5px';
-        dropArea.appendChild(listItem);
+        addfilelist(file.name);
       }
     }
   }
