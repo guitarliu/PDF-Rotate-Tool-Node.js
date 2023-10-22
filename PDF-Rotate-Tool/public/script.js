@@ -3,9 +3,26 @@ const fileInput = document.getElementById('fileinput');
 
 function addfilelist(filename) {
   const listItem = document.createElement('tr');
-  listItem.textContent = filename;
-  listItem.style.fontSize = '0.8em';
-  listItem.style.padding = '5px';
+
+  // 创建一个包含文件名的<td>元素
+  const nameCell = document.createElement('td');
+  nameCell.textContent = filename;
+  nameCell.style.fontSize = '0.8em';
+  nameCell.style.padding = '5px';
+  listItem.appendChild(nameCell);
+
+  // 创建一个删除按钮
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = '❎';
+  deleteButton.style.border = 'none';
+  deleteButton.addEventListener('click', function() {
+    listItem.remove();
+  });
+
+  // 将删除按钮添加到<tr>元素
+  const deleteCell = document.createElement('td');
+  deleteCell.appendChild(deleteButton);
+  listItem.appendChild(deleteCell);
   dropArea.appendChild(listItem);
 }
 

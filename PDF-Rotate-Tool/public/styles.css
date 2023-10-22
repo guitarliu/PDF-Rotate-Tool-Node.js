@@ -117,11 +117,6 @@ h1, h2 {
 -ms-overflow-style: none;  /* IE and Edge */
 scrollbar-width: none;  /* Firefox */
 }
-table td tr {
-  display: none;
-  box-shadow: none;
-  visibility: none;
-}
 
 input[id="fileinput"] {
   display: none;
