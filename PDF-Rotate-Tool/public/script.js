@@ -8,7 +8,7 @@ function addfilelist(filename) {
   const nameCell = document.createElement('td');
   nameCell.textContent = filename;
   nameCell.style.fontSize = '0.8em';
-  nameCell.style.padding = '5px';
+  nameCell.style.padding = '0px';
   listItem.appendChild(nameCell);
 
   // 创建一个删除按钮
