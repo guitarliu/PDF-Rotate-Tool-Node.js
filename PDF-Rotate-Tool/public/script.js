@@ -1,7 +1,17 @@
 const dropArea = document.querySelector('.droparea');
 const fileInput = document.getElementById('fileinput');
 const selectedFilesInfo = new Set(); // 用于存储已选择文件的信息
-const zip = new JSZip();
+
+let zip, PDFDocument, rgb, degrees;
+// 使用DOMContentLoaded事件确保文档准备好后再执行脚本
+document.addEventListener("DOMContentLoaded", function () {
+  // 现在可以安全地使用JSZip
+  zip = new JSZip();
+  const pdfLib = PDFLib;
+  PDFDocument = pdfLib.PDFDocument;
+  rgb = pdfLib.rgb;
+  degrees = pdfLib.degrees;
+});
 
 function resetSelectedFilesInfo() {
   selectedFilesInfo.clear();
@@ -118,30 +128,35 @@ dropArea.addEventListener('dragleave', (ev) => {
 
 // 旋转PDF
 async function rotatepdftool(pdfFile, rotateAngle){
-  const pdfBytes = await pdfFile.arrayBuffer();
-  const pdfDoc = await PDFDocument.load(pdfBytes);
-  const [page] = pdfDoc.getPages();
-  page.setRotation(rotateAngle);
-
-  // Create a new PDF with the rotated pages
-  const pdfBytesRotated = await pdfDoc.save();
-  return new Blob([pdfBytesRotated], ), {type: 'application/pdf'};
-}
-
-// 打包PDF文件
-function zippdftool(){
-
+  try{
+    // 使用fetch加载PDF文件内容
+    const pdfResponse = await fetch(URL.createObjectURL(pdfFile));
+    if (!pdfResponse.ok) {
+      throw new Error('Failed to fetch PDF content');
+    }
+    const pdfBytes = new Uint8Array(await pdfResponse.arrayBuffer());
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    const [page] = pdfDoc.getPages();
+    page.setRotation(degrees(rotateAngle));
+  
+    // Create a new PDF with the rotated pages
+    const pdfBytesRotated = await pdfDoc.save();
+    return new Blob([pdfBytesRotated], ), {type: 'application/pdf'};
+  }
+  catch (error){
+    console.error(error);
+    throw error;
+  }
 }
 
 rotatebtn.addEventListener('click', async() => {
   const selectedFiles = fileInput.files;
-
-  for (let i = 0; i < selectedFiles.length; i++){
+  for (let i= 0; i < selectedFiles.length; i++) {
     const file = selectedFiles[i];
     const rotatedFile = await rotatepdftool(file, 90);
     zip.file(file.name, rotatedFile);
-    zip.generateAsync({type:'blob'}).then(function(content){
-      saveAs(content, "result.zip");
-    });
   }
+  zip.generateAsync({type:'blob'}).then(function(content){
+    saveAs(content, "result.zip");
+  });
 })
