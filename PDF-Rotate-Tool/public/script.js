@@ -1,5 +1,12 @@
 const dropArea = document.querySelector('.droparea');
 const fileInput = document.getElementById('fileinput');
+const selectedFilesInfo = new Set(); // 用于存储已选择文件的信息
+
+function resetSelectedFilesInfo() {
+  selectedFilesInfo.clear();
+}
+
+resetSelectedFilesInfo();
 
 function addfilelist(filename) {
   const listItem = document.createElement('tr');
@@ -36,6 +43,7 @@ function checklistitems(){
   if (listItems.length == 0){
     selectpdf.style.display = 'inline';
     note.style.display = 'block';
+    resetSelectedFilesInfo();
   }
 }
 
@@ -48,14 +56,11 @@ function choosepdf() {
     FileList.innerHTML = '';
     for (let i= 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      if (file.type === 'application/pdf'){
+      if (file.type === 'application/pdf' && !selectedFilesInfo.has(file.name)){
+        selectedFilesInfo.add(file.name);
         addfilelist(file.name);
         selectpdf.style.display = 'none';
         note.style.display = 'none';
-      }
-      else{
-        selectpdf.style.display = 'inline';
-        note.style.display = 'block';
       }
     }
     fileInput.value = '';
@@ -74,14 +79,11 @@ function dropHandler(ev) {
       // if dropped items aren't files, reject them
       if (ev.dataTransfer.items[i].kind === 'file') {
         var file = ev.dataTransfer.items[i].getAsFile();
-        if (file.type === 'application/pdf') {
+        if (file.type === 'application/pdf' && !selectedFilesInfo.has(file.name)) {
+          selectedFilesInfo.add(file.name);
           addfilelist(file.name);
           selectpdf.style.display = 'none';
           note.style.display = 'none';
-        }
-        else{
-          selectpdf.style.display = 'inline';
-          note.style.display = 'block';
         }
       }
     }
