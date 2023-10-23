@@ -1,8 +1,7 @@
 const dropArea = document.querySelector('.droparea');
 const fileInput = document.getElementById('fileinput');
 const selectedFilesInfo = new Set(); // 用于存储已选择文件的信息
-
-// 引用pdf-lib库及jszip库
+const zip = new JSZip();
 
 function resetSelectedFilesInfo() {
   selectedFilesInfo.clear();
@@ -59,7 +58,7 @@ function choosepdf() {
     for (let i= 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
       if (file.type === 'application/pdf' && !selectedFilesInfo.has(file.name)){
-        selectedFilesInfo.add(file.name);
+        selectedFilesInfo.add(file);
         addfilelist(file.name);
         selectpdf.style.display = 'none';
         note.style.display = 'none';
@@ -82,7 +81,7 @@ function dropHandler(ev) {
       if (ev.dataTransfer.items[i].kind === 'file') {
         var file = ev.dataTransfer.items[i].getAsFile();
         if (file.type === 'application/pdf' && !selectedFilesInfo.has(file.name)) {
-          selectedFilesInfo.add(file.name);
+          selectedFilesInfo.add(file);
           addfilelist(file.name);
           selectpdf.style.display = 'none';
           note.style.display = 'none';
@@ -135,5 +134,14 @@ function zippdftool(){
 }
 
 rotatebtn.addEventListener('click', async() => {
-  alert("hello, world!");
+  const selectedFiles = fileInput.files;
+
+  for (let i = 0; i < selectedFiles.length; i++){
+    const file = selectedFiles[i];
+    const rotatedFile = await rotatepdftool(file, 90);
+    zip.file(file.name, rotatedFile);
+    zip.generateAsync({type:'blob'}).then(function(content){
+      saveAs(content, "result.zip");
+    });
+  }
 })
