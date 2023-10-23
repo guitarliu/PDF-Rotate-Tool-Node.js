@@ -15,8 +15,10 @@ function addfilelist(filename) {
   const deleteButton = document.createElement('button');
   deleteButton.textContent = '❎';
   deleteButton.style.border = 'none';
-  deleteButton.addEventListener('click', function() {
+  deleteButton.addEventListener('click', function(ev) {
+    ev.stopPropagation(); // 阻止事件冒泡
     listItem.remove();
+    checklistitems();
   });
 
   // 将删除按钮添加到<tr>元素
@@ -24,8 +26,18 @@ function addfilelist(filename) {
   deleteCell.appendChild(deleteButton);
   listItem.appendChild(deleteCell);
   dropArea.appendChild(listItem);
+  checklistitems();
 }
 
+// 检查listItems是否为空, 显示或隐藏相关元素
+function checklistitems(){
+  const listItems = document.querySelectorAll('.droparea tr');
+
+  if (listItems.length == 0){
+    selectpdf.style.display = 'inline';
+    note.style.display = 'block';
+  }
+}
 
 function choosepdf() {
   fileInput.click();
