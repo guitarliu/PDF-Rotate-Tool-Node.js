@@ -95,7 +95,10 @@ function dragOverHandler(ev) {
 }
 
 // 点击按钮选择文件
-selectpdf.addEventListener('click', choosepdf);
+selectpdf.addEventListener('click', function(ev){
+  selectpdf();
+  ev.stopPropagation();
+});
 dropArea.addEventListener('click', choosepdf);
 
 // 拖拽文件至框内
