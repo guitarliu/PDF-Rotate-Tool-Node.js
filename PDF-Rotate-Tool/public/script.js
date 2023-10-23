@@ -48,11 +48,17 @@ function choosepdf() {
     FileList.innerHTML = '';
     for (let i= 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
-      addfilelist(file.name);
+      if (file.type === 'application/pdf'){
+        addfilelist(file.name);
+        selectpdf.style.display = 'none';
+        note.style.display = 'none';
+      }
+      else{
+        selectpdf.style.display = 'inline';
+        note.style.display = 'block';
+      }
     }
     fileInput.value = '';
-    selectpdf.style.display = 'none';
-    note.style.display = 'none';
   })
 }
 
@@ -68,7 +74,15 @@ function dropHandler(ev) {
       // if dropped items aren't files, reject them
       if (ev.dataTransfer.items[i].kind === 'file') {
         var file = ev.dataTransfer.items[i].getAsFile();
-        addfilelist(file.name);
+        if (file.type === 'application/pdf') {
+          addfilelist(file.name);
+          selectpdf.style.display = 'none';
+          note.style.display = 'none';
+        }
+        else{
+          selectpdf.style.display = 'inline';
+          note.style.display = 'block';
+        }
       }
     }
   }
