@@ -2,6 +2,8 @@ const dropArea = document.querySelector('.droparea');
 const fileInput = document.getElementById('fileinput');
 const selectedFilesInfo = new Set(); // 用于存储已选择文件的信息
 
+// 引用pdf-lib库及jszip库
+
 function resetSelectedFilesInfo() {
   selectedFilesInfo.clear();
 }
@@ -98,7 +100,7 @@ function dragOverHandler(ev) {
 
 // 点击按钮选择文件
 selectpdf.addEventListener('click', function(ev){
-  selectpdf();
+  choosepdf();
   ev.stopPropagation();
 });
 dropArea.addEventListener('click', choosepdf);
@@ -114,3 +116,24 @@ dropArea.addEventListener('dragleave', (ev) => {
   // highlight potential drop target when files enters it
   ev.target.toggleAttribute('over', false);
 });
+
+// 旋转PDF
+async function rotatepdftool(pdfFile, rotateAngle){
+  const pdfBytes = await pdfFile.arrayBuffer();
+  const pdfDoc = await PDFDocument.load(pdfBytes);
+  const [page] = pdfDoc.getPages();
+  page.setRotation(rotateAngle);
+
+  // Create a new PDF with the rotated pages
+  const pdfBytesRotated = await pdfDoc.save();
+  return new Blob([pdfBytesRotated], ), {type: 'application/pdf'};
+}
+
+// 打包PDF文件
+function zippdftool(){
+
+}
+
+rotatebtn.addEventListener('click', async() => {
+  alert("hello, world!");
+})
