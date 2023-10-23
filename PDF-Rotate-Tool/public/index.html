@@ -32,10 +32,21 @@
                 <input type="button" name="selectpdf" id="selectpdf" value="选择文件" title="选择PDF文件">
                 <p name="note" id="note">或拖拽PDF文件至此</p>
             </div>
+            <div class="rotatetool">
+                <select name="rotateselection" id="rotateselection" title="选择旋转角度">
+                    <option value="" selected selected>--请选择--</option>
+                    <option value="rotate1">顺时针旋转90°</option>
+                    <option value="rotate2">逆时针旋转90°</option>
+                    <option value="rotate3">旋转180°</option>
+                    <option value="rotate4">自动横向旋转</option>
+                    <option value="rotate5">自动纵向旋转</option>
+                </select>
+                <input type="button" name="rotatebtn" id="rotatebtn" value="旋转" title="旋转PDF文件">
+            </div>
         </div>
     </main>
     <footer>
-        <p>&copy; 2023 PDF-Rotate-Tool by guitarliu</p>
+        <p name="copyright" id="copyright">&copy; 2023 PDF-Rotate-Tool by guitarliu</p>
     </footer>
     <script src="script.js"></script> <!-- 添加外部JavaScript文件 -->
 </body>
