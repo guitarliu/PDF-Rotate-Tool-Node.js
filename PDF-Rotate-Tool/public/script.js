@@ -1,9 +1,28 @@
 const dropArea = document.querySelector('.droparea');
 const fileInput = document.getElementById('fileinput');
 const selectedFilesInfo = new Set(); // 用于存储已选择文件的信息
+const uploadpdfsdict = {}; // 定义对象, 用于实时存储上传的文件信息
+
+let PDFDocument, rgb;
 
 function resetSelectedFilesInfo() {
   selectedFilesInfo.clear();
+}
+
+function updateloadedpdfsdict()
+{
+  const nameCells = document.querySelectorAll('.nameCell');
+  let filenamelist  = [];
+  nameCells.forEach((nameCell, index) => {
+    filenamelist.push(nameCell.textContent);
+  });
+  Object.entries(uploadpdfsdict).forEach(([key, value]) => {
+    if (!filenamelist.includes(key)){
+      delete uploadpdfsdict[key];
+    }
+  });
+
+  return uploadpdfsdict;
 }
 
 resetSelectedFilesInfo();
@@ -25,6 +44,7 @@ function addfilelist(filename) {
   deleteButton.addEventListener('click', function(ev) {
     ev.stopPropagation(); // 阻止事件冒泡
     listItem.remove();
+    updateloadedpdfsdict();
     checklistitems();
   });
 
@@ -44,6 +64,7 @@ function checklistitems(){
     selectpdf.style.display = 'inline';
     note.style.display = 'block';
     resetSelectedFilesInfo();
+    uploadpdfsdict = {};
   }
 }
 
@@ -59,6 +80,7 @@ function choosepdf() {
       if (file.type === 'application/pdf' && !selectedFilesInfo.has(file.name)){
         selectedFilesInfo.add(file.name);
         addfilelist(file.name);
+        uploadpdfsdict[file.name] = file;
         selectpdf.style.display = 'none';
         note.style.display = 'none';
       }
@@ -82,6 +104,7 @@ function dropHandler(ev) {
         if (file.type === 'application/pdf' && !selectedFilesInfo.has(file.name)) {
           selectedFilesInfo.add(file.name);
           addfilelist(file.name);
+          uploadpdfsdict[file.name] = file;
           selectpdf.style.display = 'none';
           note.style.display = 'none';
         }
@@ -114,4 +137,29 @@ dropArea.addEventListener('dragleave', (ev) => {
   // highlight potential drop target when files enters it
   ev.target.toggleAttribute('over', false);
 });
+
+// 旋转pdf文件
+function pdfrotatetool(pdfLib, rgbLib){
+  PDFDocument = pdfLib;
+  rgb = rgbLib;
+  // 旋转PDF文件
+  /*
+  Object.entries(dictionary).forEach(([key, value]) => {
+
+  });
+  */
+
+}
+
+function tipalert(){
+  let dictionaryString = "字典内容:\n";
+  for (const key in uploadpdfsdict) {
+    if (uploadpdfsdict.hasOwnProperty(key)) {
+      dictionaryString += `${key}: ${uploadpdfsdict[key]}\n`;
+    }
+  }
+  alert(dictionaryString);
+}
+
+rotatebtn.addEventListener('click', tipalert);
 

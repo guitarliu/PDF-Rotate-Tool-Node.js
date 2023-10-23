@@ -1,4 +1,9 @@
 const express = require('express');
+const {PDFDocument, rgb} = require('pdf-lib');
+const script = require('./public/script.js');
+// 将pdf-lib传递给script.js
+script.pdfrotatetool(PDFDocument, rgb);
+
 const app = express();
 const port = 3040;
 
