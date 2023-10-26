@@ -9,10 +9,10 @@ function resetSelectedFilesInfo() {
 
 function updateloadedpdfsdict()
 {
-  const nameCells = document.querySelectorAll('.nameCell');
+  const nameCells = document.querySelectorAll('.droparea td');
   let filenamelist  = [];
-  nameCells.forEach((nameCell, index) => {
-    filenamelist.push(nameCell.textContent);
+  nameCells.forEach((namecell, index) => {
+    filenamelist.push(namecell.textContent);
   });
   Object.entries(uploadpdfsdict).forEach(([key, value]) => {
     if (!filenamelist.includes(key)){
