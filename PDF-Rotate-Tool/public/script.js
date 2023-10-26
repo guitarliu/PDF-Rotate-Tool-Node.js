@@ -3,8 +3,6 @@ const fileInput = document.getElementById('fileinput');
 const selectedFilesInfo = new Set(); // 用于存储已选择文件的信息
 const uploadpdfsdict = {}; // 定义对象, 用于实时存储上传的文件信息
 
-let PDFDocument, rgb;
-
 function resetSelectedFilesInfo() {
   selectedFilesInfo.clear();
 }
