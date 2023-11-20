@@ -35,11 +35,11 @@
             <div class="rotatetool">
                 <select name="rotateselection" id="rotateselection" title="选择旋转角度">
                     <option value="" selected selected>--请选择--</option>
-                    <option value="rotate1">顺时针旋转90°</option>
-                    <option value="rotate2">逆时针旋转90°</option>
-                    <option value="rotate3">旋转180°</option>
-                    <option value="rotate4">自动横向旋转</option>
-                    <option value="rotate5">自动纵向旋转</option>
+                    <option value="90clockwise">顺时针旋转90°</option>
+                    <option value="90counterclockwise">逆时针旋转90°</option>
+                    <option value="rotate180">旋转180°</option>
+                    <option value="autorotatelandscape">自动横向旋转</option>
+                    <option value="autorotateportrait">自动纵向旋转</option>
                 </select>
                 <input type="button" name="rotatebtn" id="rotatebtn" value="旋转" title="旋转PDF文件">
             </div>
@@ -49,7 +49,9 @@
         <p name="copyright" id="copyright">&copy; 2023 PDF-Rotate-Tool by <a href="https://guitarliu.github.io"><strong>guitarliu</strong></a></p>
     </footer>
     <script src="script.js"></script> <!-- 添加外部JavaScript文件 -->
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.js"></script>
+    <script src="pdf-lib.js"></script>
+    <script src="jszip.min.js"></script>
+    <script src="FileSaver.min.js"></script>
 </body>
 </html>
 

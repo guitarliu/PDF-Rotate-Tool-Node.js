@@ -3,6 +3,7 @@ const fileInput = document.getElementById('fileinput');
 const selectedFilesInfo = new Set(); // 用于存储已选择文件的信息
 const uploadpdfsdict = {}; // 定义对象, 用于实时存储上传的文件信息
 
+
 function resetSelectedFilesInfo() {
   selectedFilesInfo.clear();
 }
@@ -137,27 +138,83 @@ dropArea.addEventListener('dragleave', (ev) => {
 });
 
 // 旋转pdf文件
-function pdfrotatetool(pdfLib, rgbLib){
+async function pdfrotatetool(pdfLib, rgbLib){
   PDFDocument = pdfLib;
   rgb = rgbLib;
-  // 旋转PDF文件
-  /*
-  Object.entries(dictionary).forEach(([key, value]) => {
 
-  });
-  */
+  // 打包下载旋转后PDF文件
+  var zip = new JSZip();
 
-}
+  // 获取选择的角度并旋转PDF, 逆负顺正
+  let selectedOption = rotateselection.options[rotateselection.selectedIndex].value;
 
-function tipalert(){
-  let dictionaryString = "字典内容:\n";
-  for (const key in uploadpdfsdict) {
-    if (uploadpdfsdict.hasOwnProperty(key)) {
-      dictionaryString += `${key}: ${uploadpdfsdict[key]}\n`;
-    }
+  // 确保选择了有效的旋转角度
+  if (!selectedOption) {
+    alert("请选择旋转角度!");
+    return;
   }
-  alert(dictionaryString);
+  
+  // 旋转PDF文件
+  for (const key in uploadpdfsdict) {
+    const formPdfBytes = await readAsArrayBuffer(uploadpdfsdict[key]);
+    const pdfDoc = await PDFLib.PDFDocument.load(formPdfBytes);
+    const [page] = pdfDoc.getPages();
+
+    // 获取原文件旋转角度
+    const originrotationAngle = page.getRotation().angle;
+
+    switch (selectedOption) {
+      case "90clockwise":
+        await page.setRotation(PDFLib.degrees(originrotationAngle + 90));
+        break;
+      case "90counterclockwise":
+        await page.setRotation(PDFLib.degrees(originrotationAngle - 90));
+        break;
+      case "rotate180":
+        await page.setRotation(PDFLib.degrees(originrotationAngle + 180));
+        break;
+      case "autorotatelandscape":
+        await page.setRotation(PDFLib.degrees(90));
+        break;
+      case "autorotateportrait":
+        await page.setRotation(PDFLib.degrees(0));
+        break;
+      default:
+        alert("选择了无效的旋转角度!");
+        return;
+    }
+
+    // 将旋转后的PDF添加至ZIP文件中
+    const pdfData = await pdfDoc.save();
+    zip.file(key, pdfData);
+  }
+  zip.generateAsync({type:"blob"}).then(function(content) {
+    // see FileSaver.js
+    saveAs(content, "Rotate-result.zip");
+  });
 }
 
-rotatebtn.addEventListener('click', tipalert);
+// 读取载入文件字节流
+function readAsArrayBuffer(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    // 定义读取完成时的回调函数
+    reader.onload = (event) => {
+      const arrayBuffer = event.target.result;
+      resolve(arrayBuffer);
+    };
+
+    // 定义读取出错时的回调函数
+    reader.onerror = (event) => {
+      reject(`Error reading file: ${event.target.error}`);
+    };
+
+    // 以 ArrayBuffer 格式读取文件内容
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+
+rotatebtn.addEventListener('click', pdfrotatetool);
 
