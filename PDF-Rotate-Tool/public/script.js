@@ -142,6 +142,12 @@ async function pdfrotatetool(pdfLib, rgbLib){
   PDFDocument = pdfLib;
   rgb = rgbLib;
 
+  // 判断是否上传文件
+  if (Object.keys(uploadpdfsdict).length == 0){
+    alert("请上传PDF文件!");
+    return;
+  }
+
   // 打包下载旋转后PDF文件
   var zip = new JSZip();
 
