@@ -164,30 +164,36 @@ async function pdfrotatetool(pdfLib, rgbLib){
   for (const key in uploadpdfsdict) {
     const formPdfBytes = await readAsArrayBuffer(uploadpdfsdict[key]);
     const pdfDoc = await PDFLib.PDFDocument.load(formPdfBytes);
-    const [page] = pdfDoc.getPages();
+    const pages = pdfDoc.getPages();
 
-    // 获取原文件旋转角度
-    const originrotationAngle = page.getRotation().angle;
+    for (let i=0; i < pages.length; i++) {
 
-    switch (selectedOption) {
-      case "90clockwise":
-        await page.setRotation(PDFLib.degrees(originrotationAngle + 90));
-        break;
-      case "90counterclockwise":
-        await page.setRotation(PDFLib.degrees(originrotationAngle - 90));
-        break;
-      case "rotate180":
-        await page.setRotation(PDFLib.degrees(originrotationAngle + 180));
-        break;
-      case "autorotatelandscape":
-        await page.setRotation(PDFLib.degrees(90));
-        break;
-      case "autorotateportrait":
-        await page.setRotation(PDFLib.degrees(0));
-        break;
-      default:
-        alert("选择了无效的旋转角度!");
-        return;
+      const page = pages[i];
+      // 获取原文件旋转角度
+      const originrotationAngle = page.getRotation().angle;
+
+      switch (selectedOption) {
+        case "90clockwise":
+          await page.setRotation(PDFLib.degrees(originrotationAngle + 90));
+          break;
+        case "90counterclockwise":
+          await page.setRotation(PDFLib.degrees(originrotationAngle - 90));
+          break;
+        case "rotate180":
+          await page.setRotation(PDFLib.degrees(originrotationAngle + 180));
+          break;
+        case "autorotatelandscape":
+          await page.setRotation(PDFLib.degrees(90));
+          break;
+        case "autorotateportrait":
+          await page.setRotation(PDFLib.degrees(0));
+          break;
+        default:
+          alert("选择了无效的旋转角度!");
+          return;
+    }
+
+
     }
 
     // 将旋转后的PDF添加至ZIP文件中
